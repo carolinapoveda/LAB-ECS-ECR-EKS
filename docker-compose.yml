@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  database:
+    image: mongo
+    container_name: lab_database
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=unir
+      - MONGO_INITDB_ROOT_PASSWORD=un1r2022
+    volumes:
+      - lab_data:/data/db
+  node-web-app:
+    container_name: lab_node
+    build:
+      context: ./node-web-app
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    volumes:
+      - /app/node_modules
+      - ./node-web-app:/app
+    ports:
+      - "3000:3000"
+
+volumes:
+  lab_data:
